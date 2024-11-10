@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Тест</title>
+    <style>
+      html {
+        height: 100%;
+        background-color: #1e1e1e;
+      }
+      body {
+        height: 100%;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #question {
+        font-size: 18px;
+        margin-bottom: 10px;
+        font-size: 20px;
+        color: white;
+      }
+
+      .answer-btn {
+        margin-bottom: 10px;
+        width: 400px;
+        min-height: 70px;
+        background-color: #00bfa6;
+        padding: 14px 40px;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        border-radius: 10px;
+        border: 2px dashed #00bfa6;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+          rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+        transition: 0.4s;
+      }
+
+      .answer-btn span:last-child {
+        display: none;
+      }
+
+      .answer-btn:hover {
+        transition: 0.4s;
+        border: 2px dashed #00bfa6;
+        background-color: #fff;
+        color: #00bfa6;
+      }
+
+      .answer-btn:active {
+        background-color: #87dbd0;
+      }
+
+      #result {
+        color: white;
+        position: absolute;
+        font-size: 20px;
+      }
+
+      .test {
+        width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test">
+      <div id="question"></div>
+      <div id="answers"></div>
+    </div>
+    <div id="result"></div>
+
+    <script>
+      let currentQuestion = 0;
+      let correctAnswers = 0;
+      let questions = [];
+
+      // Загрузка файла с вопросами и ответами
+      fetch("test.txt")
+        .then((response) => response.text())
+        .then((data) => {
+          const lines = data.split("\n");
+
+          for (let i = 0; i < lines.length; i += 6) {
+            const question = lines[i];
+            const answers = lines.slice(i + 1, i + 6);
+
+            if (question.trim() !== "") {
+              questions.push({ question, answers });
+            }
+          }
+
+          displayQuestion();
+        })
+        .catch((error) => console.error("Ошибка загрузки файла:", error));
+
+      // Отображение вопроса и ответов
+      function displayQuestion() {
+        document.getElementById("question").innerText =
+          questions[currentQuestion].question;
+
+        const answersContainer = document.getElementById("answers");
+        answersContainer.innerHTML = "";
+
+        for (let i = 0; i < questions[currentQuestion].answers.length; i++) {
+          const answer = questions[currentQuestion].answers[i].trim();
+          const isCorrect = answer.includes("~");
+
+          if (answer !== "") {
+            const button = document.createElement("button");
+            button.innerText = answer.replace("~", ""); // Убираем символ ~ для отображения
+            button.classList.add("answer-btn");
+            button.onclick = function () {
+              selectAnswer(isCorrect);
+            };
+            answersContainer.appendChild(button);
+          }
+        }
+      }
+
+      // Обработка выбора ответа
+      function selectAnswer(isCorrect) {
+        if (isCorrect) {
+          correctAnswers++;
+        }
+
+        currentQuestion++;
+
+        if (currentQuestion < questions.length) {
+          displayQuestion();
+        } else {
+          hideLastQuestion();
+          showResult();
+        }
+      }
+
+      // Скрытие последнего вопроса и ответов
+      function hideLastQuestion() {
+        document.getElementById("question").style.display = "none";
+        document.getElementById("answers").style.display = "none";
+      }
+
+      // Вывод результата
+      function showResult() {
+        document.getElementById(
+          "result"
+        ).innerText = `Правильных ответов: ${correctAnswers} из ${questions.length}`;
+      }
+    </script>
+  </body>
+</html>
