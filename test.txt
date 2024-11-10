@@ -1117,8 +1117,7 @@ unguéntum, fovéa, scaphoidéus, scapúlum
 acústicus, Vióla, móbilis, árteriola
 acústicus, procéssus, scapúlum, chlorícus
 vértebra, cerébellum, chlorícus, sutúr
-Визначте правильний варіант перекладу у Nominativus singularis та
-Genetivus singularis «піднебінна кістка»
+Визначте правильний варіант перекладу у Nominativus singularis та Genetivus singularis «піднебінна кістка»
 --------------------
     + os palatinum – ossis palatini
 os occipitale – ossis occipitalis
@@ -2680,8 +2679,7 @@ mixtio, tibia, cartilago, putridus
 dentinum, luxatio, inflammatio, glottis
 bicipitis, diabeticus, stipes, substantia
 teretis, intestinum, insertio, domesticus
-Визначте правильний варіант перекладу у Nominativus singularis та
-Genetivus singularis «передня область»
+Визначте правильний варіант перекладу у Nominativus singularis та Genetivus singularis «передня область»
 --------------------
     + regio anterior – regionis anterioris
 region anteria – regionis anteriae
