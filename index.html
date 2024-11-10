@@ -1,155 +1,211 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Тест</title>
     <style>
-      html {
-        height: 100%;
-        background-color: #1e1e1e;
-      }
-      body {
-        height: 100%;
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      #question {
-        font-size: 18px;
-        margin-bottom: 10px;
-        font-size: 20px;
-        color: white;
-      }
-
-      .answer-btn {
-        margin-bottom: 10px;
-        width: 400px;
-        min-height: 70px;
-        background-color: #00bfa6;
-        padding: 14px 40px;
-        color: #fff;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        cursor: pointer;
-        border-radius: 10px;
-        border: 2px dashed #00bfa6;
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-          rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-        transition: 0.4s;
-      }
-
-      .answer-btn span:last-child {
-        display: none;
-      }
-
-      .answer-btn:hover {
-        transition: 0.4s;
-        border: 2px dashed #00bfa6;
-        background-color: #fff;
-        color: #00bfa6;
-      }
-
-      .answer-btn:active {
-        background-color: #87dbd0;
-      }
-
-      #result {
-        color: white;
-        position: absolute;
-        font-size: 20px;
-      }
-
-      .test {
-        width: 400px;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .answers {
+            margin-left: 20px;
+        }
+        .answers label {
+            display: block;
+            margin: 5px 0;
+        }
+        .result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .feedback {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
     </style>
-  </head>
-  <body>
-    <div class="test">
-      <div id="question"></div>
-      <div id="answers"></div>
-    </div>
-    <div id="result"></div>
+</head>
+<body>
+
+    <h1>Тест</h1>
+
+    <div id="test-container"></div>
+
+    <button onclick="submitTest()">Перевірити результат</button>
+    <div class="result" id="result"></div>
 
     <script>
-      let currentQuestion = 0;
-      let correctAnswers = 0;
-      let questions = [];
-
-      // Загрузка файла с вопросами и ответами
-      fetch("test.txt")
-        .then((response) => response.text())
-        .then((data) => {
-          const lines = data.split("\n");
-
-          for (let i = 0; i < lines.length; i += 6) {
-            const question = lines[i];
-            const answers = lines.slice(i + 1, i + 6);
-
-            if (question.trim() !== "") {
-              questions.push({ question, answers });
+        async function fetchTestData() {
+            try {
+                const response = await fetch('test.txt');
+                const data = await response.text();
+                return parseTestData(data);
+            } catch (error) {
+                console.error("Помилка завантаження тесту:", error);
+                return [];
             }
-          }
-
-          displayQuestion();
-        })
-        .catch((error) => console.error("Ошибка загрузки файла:", error));
-
-      // Отображение вопроса и ответов
-      function displayQuestion() {
-        document.getElementById("question").innerText =
-          questions[currentQuestion].question;
-
-        const answersContainer = document.getElementById("answers");
-        answersContainer.innerHTML = "";
-
-        for (let i = 0; i < questions[currentQuestion].answers.length; i++) {
-          const answer = questions[currentQuestion].answers[i].trim();
-          const isCorrect = answer.includes("~");
-
-          if (answer !== "") {
-            const button = document.createElement("button");
-            button.innerText = answer.replace("~", ""); // Убираем символ ~ для отображения
-            button.classList.add("answer-btn");
-            button.onclick = function () {
-              selectAnswer(isCorrect);
-            };
-            answersContainer.appendChild(button);
-          }
-        }
-      }
-
-      // Обработка выбора ответа
-      function selectAnswer(isCorrect) {
-        if (isCorrect) {
-          correctAnswers++;
         }
 
-        currentQuestion++;
+        function parseTestData(data) {
+            const questions = [];
+            const lines = data.split('\n');
+            let currentQuestion = null;
+            const phrases = [
+  'Звук', 'Буквосполучення', 'Назвіть', 'Латинська', 'Латинський', 
+  'Виберіть', 'Узгодьте', 'Як', 'Зазначте', 'Оберіть', 
+  'Перекладіть', 'Знайдіть', 'Узгодити', 'Перекласти', 'Визначте', 
+  'Виберіть', 'Яке', 'Визначити', 'Слово', 'Наголос', "Складні", 
+  'У якому', "Що таке", "Вибрати", "Приголосний", "Вказати ", "Вкажіть ", 
+  "За", 'Прикметник', 'Виберiть', 
+            ];
 
-        if (currentQuestion < questions.length) {
-          displayQuestion();
-        } else {
-          hideLastQuestion();
-          showResult();
+            for (const line of lines) {
+                if (line.trim() === '--------------------' || line.trim() === '-------------------') {
+                    continue;
+                }
+
+                if (phrases.some(phrase => line.trim().startsWith(phrase))) {
+                    if (currentQuestion) questions.push(currentQuestion);  
+                    currentQuestion = {
+                        question: line.trim(),
+                        answers: [],
+                        correctAnswer: null
+                    };
+                } else if (line.trim().startsWith('+')) {
+                    currentQuestion.correctAnswer = line.trim().substring(2).trim();
+                    currentQuestion.answers.push(currentQuestion.correctAnswer);
+                } else if (line.trim().length > 0) {
+                    currentQuestion.answers.push(line.trim());
+                }
+            }
+
+            if (currentQuestion) questions.push(currentQuestion);  
+            return questions;
         }
-      }
 
-      // Скрытие последнего вопроса и ответов
-      function hideLastQuestion() {
-        document.getElementById("question").style.display = "none";
-        document.getElementById("answers").style.display = "none";
-      }
+        // Функция для случайной сортировки массива
+        function shuffleArray(arr) {
+            return arr.sort(() => Math.random() - 0.5);
+        }
 
-      // Вывод результата
-      function showResult() {
-        document.getElementById(
-          "result"
-        ).innerText = `Правильных ответов: ${correctAnswers} из ${questions.length}`;
-      }
+        // Сортировка вопросов и ответов случайным образом
+        function shuffleTestData(test) {
+            // Перемешиваем вопросы
+            const shuffledQuestions = shuffleArray(test);
+            
+            // Для каждого вопроса перемешиваем его ответы
+            shuffledQuestions.forEach(question => {
+                question.answers = shuffleArray(question.answers);
+            });
+
+            return shuffledQuestions;
+        }
+
+        async function displayTest() {
+            const test = await fetchTestData();
+            const shuffledTest = shuffleTestData(test);  // Перемешиваем вопросы и ответы
+            const container = document.getElementById('test-container');
+            container.innerHTML = '';
+
+            shuffledTest.forEach((item, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+
+                const questionTitle = document.createElement('p');
+                questionTitle.innerText = item.question;
+                questionDiv.appendChild(questionTitle);
+
+                const answersDiv = document.createElement('div');
+                answersDiv.classList.add('answers');
+
+                item.answers.forEach((answer, answerIndex) => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question${index}`;
+                    input.value = answer;
+
+                    // Обработчик события для изменения выбора
+                    input.addEventListener('change', () => showFeedback(input, item, questionDiv));
+
+                    label.appendChild(input);
+                    label.appendChild(document.createTextNode(answer));
+                    answersDiv.appendChild(label);
+                });
+
+                questionDiv.appendChild(answersDiv);
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function showFeedback(input, item, questionDiv) {
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.classList.add('feedback');
+            
+            const isCorrect = input.value === item.correctAnswer;
+            if (isCorrect) {
+                feedbackDiv.classList.add('correct');
+                feedbackDiv.innerText = "Правильна відповідь!";
+            } else {
+                feedbackDiv.classList.add('incorrect');
+                feedbackDiv.innerText = `Неправильна відповідь. Правильна: ${item.correctAnswer}`;
+            }
+
+            // Убираем предыдущую обратную связь и добавляем новую
+            const existingFeedback = questionDiv.querySelector('.feedback');
+            if (existingFeedback) {
+                existingFeedback.remove();
+            }
+            questionDiv.appendChild(feedbackDiv);
+        }
+
+        async function submitTest() {
+            const test = await fetchTestData();
+            let score = 0;
+            const container = document.getElementById('test-container');
+            container.querySelectorAll('.feedback').forEach(f => f.remove());  // Clear previous feedback
+
+            test.forEach((item, index) => {
+                const selectedAnswer = document.querySelector(`input[name="question${index}"]:checked`);
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.classList.add('feedback');
+
+                if (selectedAnswer) {
+                    const isCorrect = selectedAnswer.value === item.correctAnswer;
+                    if (isCorrect) {
+                        feedbackDiv.classList.add('correct');
+                        feedbackDiv.innerText = "Правильна відповідь!";
+                        score++;
+                    } else {
+                        feedbackDiv.classList.add('incorrect');
+                        feedbackDiv.innerText = `Неправильна відповідь. Правильна: ${item.correctAnswer}`;
+                    }
+                } else {
+                    feedbackDiv.classList.add('incorrect');
+                    feedbackDiv.innerText = `Не вибрано відповідь. Правильна: ${item.correctAnswer}`;
+                }
+
+                const questionDiv = container.querySelectorAll('.question')[index];
+                questionDiv.appendChild(feedbackDiv);
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerText = `Ваш результат: ${score} з ${test.length}`;
+        }
+
+        displayTest();
     </script>
-  </body>
+
+</body>
 </html>
