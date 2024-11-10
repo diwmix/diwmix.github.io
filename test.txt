@@ -659,8 +659,7 @@ foramena venae pulmonis
 extremitates
 extremitatorum
 extremitorum    - extermitatis
-Узгодьте прикметник з іменником у Nom. Sing. та Gen. Sing.
-«process__calcan__»:
+Узгодьте прикметник з іменником у Nom. Sing. та Gen. Sing. «process__calcan__»:
 --------------------
     + processus calcaneus – processus calcanei
 processus calcaneus – processi calcanei
