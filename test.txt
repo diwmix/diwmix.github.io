@@ -688,7 +688,8 @@ tunica, conjunctiva, vomer, humor
 flexura, corona, rectum, jejunum    
 flos, liquor, paries, tuber
 Перекласти латинською мовою клінічний термін сповільнене серцебиття:
--------------------    + bradycardia
+-------------------    
++ bradycardia
 tachycardia
 bradyphagia
 bradypnoё
