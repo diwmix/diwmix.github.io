@@ -601,7 +601,8 @@ lamǐna, impressio, exitus, dorsum
 Перекладіть українською мовою анатомічний термін “fossa vesicae biliaris”:
 --------------------
     + ямка жовчного міхура
-отвір жовчного міхура    - ямка сечового міхура
+отвір жовчного міхура    
+ямка сечового міхура
 ямка жовчної протоки
 отвори жовчних проток
 Перекласти латинською мовою клінічний термін параліч м’язів очей:
@@ -3648,7 +3649,8 @@ Cephaёlis, chelidonium, Quercus, Ammonium    - sapiens, remedium, Tannoidum, ad
     + прикріплення зв’язок
 наука про зв’язки
 розрізання зв’язок
-розм’якшення зв’язок    - напруження зв’язок
+розм’якшення зв’язок    
+напруження зв’язок
 Перекладіть українською мовою анатомічний термін “apex partis petrosae”:
 --------------------
     + верхівка кам’янистої частини
@@ -3661,7 +3663,8 @@ Cephaёlis, chelidonium, Quercus, Ammonium    - sapiens, remedium, Tannoidum, ad
     + incisura jugularis – incisurae jugularis
 incisurus jugularus – incisuri jugulari
 incisura jugularia – incisurae jugulariae
-incisurum jugularium – incisuri jugularii    - incisura jugularis – incisurae jugulare
+incisurum jugularium – incisuri jugularii    
+incisura jugularis – incisurae jugulare
 Перекласти латинською мовою клінічний термін параліч м’язів очей:
 --------------------
     + ophthalmoplegia
@@ -3730,7 +3733,8 @@ allergia, ulitis, cholangitis, necrosis
     + caput, dens,pollex, pulmo
 arcus, ureter, apex, canalis
 mater, meninx, genu, homo
-tumor, crus, angulus, radix    - sinus, femur, pes, cortex
+tumor, crus, angulus, radix    
+sinus, femur, pes, cortex
 Перекладіть термін «перегородки клиновидних пазух»:
 --------------------
     + septa sinuum sphenoidalium
