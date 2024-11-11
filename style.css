@@ -97,7 +97,6 @@ input:checked {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
 }
 
 h2 span a {
@@ -124,7 +123,7 @@ h2 span a:visited {
     background-color: #ffffff30;
     border-radius: 10px;
     transition: 0.5s;
-
+    margin-bottom: 10px;
 }
 
 .submit:hover {
