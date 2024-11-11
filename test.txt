@@ -1477,7 +1477,8 @@ facies articulatio
 + thyreoideus
 infantilis
 gangraenosus
-paralyticus    - acutus
+paralyticus    
+acutus
 Оберіть термін зі значенням суфікса «незапальне захворювання, часто пов’язане з отруєнням»:
 -------------------    
 + botulismus
@@ -3164,14 +3165,14 @@ lingua , ganglion, gignere, anguis
 gyrus, gingivalis, glandula, analginum
 Оберіть латинський прикметник зі значенням суфікса «подібний до»:
 -------------------    
-cruciformis
++ cruciformis
 trophicus
 uterinus
 pharyngeus
 cancerogenus
 Зазначте кінцевий терміноелемент зі значенням “зміщення органа”:
 -------------------    
--ectopia
++ -ectopia
 -tonia
 -ectomia
 -tomia
@@ -3359,8 +3360,8 @@ tendo vaginae synovialis musculus radialis flexor
 vagina tendinis musculus flexor radialis synovialis
 musculus flexor radialis tendinis vaginae synovialis
 Який грецький дублет відповідає латинському іменнику “digitus, i m”:
--------------------    +
- dactyl-
+-------------------    
++ dactyl-
 pteryg-
 falang-    
 brachi-
