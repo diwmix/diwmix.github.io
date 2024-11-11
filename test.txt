@@ -2322,8 +2322,7 @@ papillus
 -paresis
 -ectasis
 -necrosis
-Визначте правильний варіант перекладу у Nominativus singularis та
-Genetivus singularis «печеристе тіло»
+Визначте правильний варіант перекладу у Nominativus singularis та Genetivus singularis «печеристе тіло»
 --------------------
     + corpus cavernosum – corporis cavernosi
 corpus callosum – corporis callosi
@@ -2337,8 +2336,7 @@ corpus adiposum – corporis adiposi
 -sthenia
 -trophia
 -plastica
-Визначте правильний варіант перекладу у Nominativus singularis та
-Genetivus singularis «горлове сплетення»
+Визначте правильний варіант перекладу у Nominativus singularis та Genetivus singularis «горлове сплетення»
 --------------------
     + plexus pharyngeus – plexus pharyngei
 plexus pharyngeus – plexi pharyngei
