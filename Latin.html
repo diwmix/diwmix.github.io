@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="container">
+        <h2 class="Greeting">Зроблено для стоматологів з любов'ю ❤️ <br> <span>👉 <a href="https://instagram.com/diwmix">Inst: Diwmix</a> 👈</span> </h2>
+        <div id="test-container"></div>
+        <div class="result" id="result"></div>
+        <button class="submit" onclick="submitTest()">Перевірити результат</button>
+        <button class="down" onclick="scrollToBottom()">▼</button>
+    </div>
+
+    <script>
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth' // Плавная прокрутка
+            });
+        }
+        let shuffledTest = []; // Глобальная переменная для сохранения перемешанного теста
+    
+        async function fetchTestData() {
+            try {
+                const response = await fetch('BaseLatin.txt');
+                const data = await response.text();
+                return parseTestData(data);
+            } catch (error) {
+                console.error("Помилка завантаження тесту:", error);
+                return [];
+            }
+        }
+    
+        function parseTestData(data) {
+            const questions = [];
+            const lines = data.split('\n');
+            let currentQuestion = null;
+            const phrases = [
+                'Звук', 'Буквосполучення', 'Назвіть', 'Латинська', 'Латинський', 
+                'Виберіть', 'Узгодьте', 'Як', 'Зазначте', 'Оберіть', 
+                'Перекладіть', 'Знайдіть', 'Узгодити', 'Перекласти', 'Визначте', 
+                'Виберіть', 'Яке', 'Визначити', 'Слово', 'Наголос', "Складні", 
+                'У якому', "Що таке", "Вибрати", "Приголосний", "Вказати ", "Вкажіть ", 
+                "За", 'Прикметник', 'Виберiть', 'Форма'
+            ];
+    
+            for (const line of lines) {
+                if (line.trim() === '--------------------' || line.trim() === '-------------------') {
+                    continue;
+                }
+    
+                if (phrases.some(phrase => line.trim().startsWith(phrase))) {
+                    if (currentQuestion) questions.push(currentQuestion);  
+                    currentQuestion = {
+                        question: line.trim(),
+                        answers: [],
+                        correctAnswer: null
+                    };
+                } else if (line.trim().startsWith('+')) {
+                    currentQuestion.correctAnswer = line.trim().substring(2).trim();
+                    currentQuestion.answers.push(currentQuestion.correctAnswer);
+                } else if (line.trim().length > 0) {
+                    currentQuestion.answers.push(line.trim());
+                }
+            }
+    
+            if (currentQuestion) questions.push(currentQuestion);  
+            return questions;
+        }
+    
+        function shuffleArray(arr) {
+            return arr.sort(() => Math.random() - 0.5);
+        }
+    
+        function shuffleTestData(test) {
+            const shuffledQuestions = shuffleArray(test);
+            
+            shuffledQuestions.forEach(question => {
+                question.answers = shuffleArray(question.answers);
+            });
+    
+            return shuffledQuestions;
+        }
+    
+        async function displayTest() {
+            const test = await fetchTestData();
+            shuffledTest = shuffleTestData(test);  // Перемешиваем и сохраняем в глобальной переменной
+            const container = document.getElementById('test-container');
+            container.innerHTML = '';
+    
+            shuffledTest.forEach((item, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+    
+                const questionTitle = document.createElement('p');
+                questionTitle.innerText = item.question;
+                questionDiv.appendChild(questionTitle);
+    
+                const answersDiv = document.createElement('div');
+                answersDiv.classList.add('answers');
+    
+                item.answers.forEach((answer, answerIndex) => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question${index}`;
+                    input.value = answer;
+    
+                    input.addEventListener('change', () => showFeedback(input, item, questionDiv));
+    
+                    label.appendChild(input);
+                    label.appendChild(document.createTextNode(answer));
+                    answersDiv.appendChild(label);
+                });
+    
+                questionDiv.appendChild(answersDiv);
+                container.appendChild(questionDiv);
+            });
+        }
+    
+        function showFeedback(input, item, questionDiv) {
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.classList.add('feedback');
+    
+            const isCorrect = input.value === item.correctAnswer;
+            if (isCorrect) {
+                feedbackDiv.classList.add('correct');
+                feedbackDiv.innerText = "Правильна відповідь!";
+            } else {
+                feedbackDiv.classList.add('incorrect');
+                feedbackDiv.innerText = `Неправильна відповідь. Правильна: ${item.correctAnswer}`;
+            }
+    
+            const existingFeedback = questionDiv.querySelector('.feedback');
+            if (existingFeedback) {
+                existingFeedback.remove();
+            }
+            questionDiv.appendChild(feedbackDiv);
+        }
+    
+        function submitTest() {
+            let score = 0;
+            const container = document.getElementById('test-container');
+            container.querySelectorAll('.feedback').forEach(f => f.remove());
+    
+            shuffledTest.forEach((item, index) => {
+                const selectedAnswer = document.querySelector(`input[name="question${index}"]:checked`);
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.classList.add('feedback');
+    
+                if (selectedAnswer) {
+                    const isCorrect = selectedAnswer.value === item.correctAnswer;
+                    if (isCorrect) {
+                        feedbackDiv.classList.add('correct');
+                        feedbackDiv.innerText = "Правильна відповідь!";
+                        score++;
+                    } else {
+                        feedbackDiv.classList.add('incorrect');
+                        feedbackDiv.innerText = `Неправильна відповідь. Правильна: ${item.correctAnswer}`;
+                    }
+                } else {
+                    feedbackDiv.classList.add('incorrect');
+                    feedbackDiv.innerText = `Не вибрано відповідь. Правильна: ${item.correctAnswer}`;
+                }
+    
+                const questionDiv = container.querySelectorAll('.question')[index];
+                questionDiv.appendChild(feedbackDiv);
+            });
+    
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerText = `Ваш результат: ${score} з ${shuffledTest.length}`;
+        }
+    
+        displayTest();
+    </script>
+
+</body>
+</html>
