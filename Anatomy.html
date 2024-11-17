@@ -57,7 +57,7 @@
                         correctAnswer: null
                     };
                 } else if (line.trim().startsWith('*')) {
-                    currentQuestion.correctAnswer = line.trim().substring(2).trim();
+                    currentQuestion.correctAnswer = line.trim().substring(1).trim();
                     currentQuestion.answers.push(currentQuestion.correctAnswer);
                 } else if (line.trim().length > 0) {
                     currentQuestion.answers.push(line.trim());
